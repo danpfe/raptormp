@@ -21,18 +21,28 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.codelair.raptormp</groupId>
-  <artifactId>raptormp-aggregator</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
+  <parent>
+    <groupId>io.codelair.raptormp</groupId>
+    <artifactId>raptormp-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../parent/pom.xml</relativePath>
+  </parent>
 
-  <name>RaptorMP :: Aggregator</name>
-  <description>Aggregator module for RaptorMP - a fast, light and customizable Eclipse MicroProfile™ middleware.</description>
+  <artifactId>raptormp-server</artifactId>
 
-  <modules>
-    <module>parent</module>
-    <module>base</module>
-    <module>server</module>
-  </modules>
+  <name>RaptorMP :: Server</name>
+  <description>Server module for RaptorMP - configures and runs the HTTP-server and Servlet-container.</description>
+
+  <properties>
+    <version.undertow-servlet>2.0.26.Final</version.undertow-servlet>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.undertow</groupId>
+      <artifactId>undertow-servlet</artifactId>
+      <version>${version.undertow-servlet}</version>
+    </dependency>
+  </dependencies>
 
 </project>
