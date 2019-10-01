@@ -1,0 +1,15 @@
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+charset = utf-8
+max_line_length = 140
+curly_bracket_next_line = false
+continuation_indent_size = 4
+spaces_around_operators = true
+spaces_around_brackets = both
+wildcard_import_limit = 1000
