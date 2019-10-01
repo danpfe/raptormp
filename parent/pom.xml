@@ -22,15 +22,39 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.codelair.raptormp</groupId>
-  <artifactId>raptormp-aggregator</artifactId>
+  <artifactId>raptormp-parent</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>RaptorMP :: Aggregator</name>
-  <description>Aggregator module for RaptorMP - a fast, light and customizable Eclipse MicroProfile™ middleware.</description>
+  <name>RaptorMP :: Parent</name>
 
-  <modules>
-    <module>parent</module>
-  </modules>
+  <properties>
+    <!-- The basics -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+
+    <!-- Plugin versions -->
+    <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
+    <version.maven-surefire-plugin>2.22.2</version.maven-surefire-plugin>
+  </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${version.maven-compiler-plugin}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${version.maven-surefire-plugin}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
 
 </project>
