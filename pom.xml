@@ -33,6 +33,7 @@
     <module>parent</module>
     <module>base</module>
     <module>server</module>
+    <module>common</module>
   </modules>
 
 </project>

@@ -33,4 +33,12 @@
   <name>RaptorMP :: Base</name>
   <description>Base module for RaptorMP - deals with bootstrapping and basic configuration of the application server.</description>
 
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>raptormp-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
 </project>
