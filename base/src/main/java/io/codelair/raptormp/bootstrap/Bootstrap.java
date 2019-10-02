@@ -35,7 +35,7 @@ public class Bootstrap
     log = Logger.getLogger( Bootstrap.class.getSimpleName() );
 
     // Print bootstrap logo
-      log.info( logo );
+    log.info( logo );
 
   }
 
