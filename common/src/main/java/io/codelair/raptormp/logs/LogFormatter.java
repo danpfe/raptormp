@@ -6,8 +6,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
+import static java.lang.System.Logger.Level;
 
 /**
  * RaptorMP logs formatter, used throughout the server
@@ -16,38 +15,37 @@ import java.util.logging.LogRecord;
  * <p>
  *
  * @author Hassan Nazar, hassenasse @ github (2019)
- * @see also LogUtilConsoleAppender
+ * @see also CoreConsoleLogger LoggerFinder
  */
-public class LogFormatter extends Formatter
+public class LogFormatter
 {
   private static final DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss:SSS" );
 
-  public String format( LogRecord record )
+  public static String format( String msg, Throwable thrown, Level level )
   {
 
-    ZonedDateTime zoneTime = Instant.ofEpochMilli( record.getMillis() )
+    ZonedDateTime zoneTime = Instant.now()
         .atZone( ZoneId.systemDefault() );
 
-    String logSource = record.getSourceClassName() != null ? record.getSourceClassName() : record.getLoggerName();
-    String message = formatMessage( record );
+    String message = msg;
     String throwable = "";
 
     // Print throwable, if existing
-    if ( record.getThrown() != null )
+    if ( thrown != null )
     {
 
       StringWriter writer = new StringWriter();
       PrintWriter printWriter = new PrintWriter( writer );
       printWriter.println();
-      record.getThrown().printStackTrace( printWriter );
+      thrown.printStackTrace( printWriter );
       printWriter.close();
       throwable = writer.toString();
 
     }
 
     return zoneTime.format( dateTimeFormat ) + " "
-        + record.getLevel().getName()
-        + " :: " + logSource + " :: "
+        + level
+        + " :: "
         + message + throwable + "\n";
   }
 }

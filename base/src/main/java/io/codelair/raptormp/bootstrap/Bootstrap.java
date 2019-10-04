@@ -1,8 +1,6 @@
 package io.codelair.raptormp.bootstrap;
 
-import io.codelair.raptormp.logs.LogConfigurator;
-
-import java.util.logging.Logger;
+import static java.lang.System.Logger.Level;
 
 /**
  * Bootstraps the application server.
@@ -12,12 +10,12 @@ import java.util.logging.Logger;
 public class Bootstrap
 {
 
-  private static Logger log;
+  private static System.Logger LOGGER = System.getLogger( Bootstrap.class.getSimpleName() );
 
-  public static void main( String[] args )
+  public static void main( String[] args ) throws IllegalAccessException
   {
     String logo =
-            "\n" +
+        "\n" +
             "╔═══╗─────╔╗─────╔═╗╔═╦═══╗\n" +
             "║╔═╗║────╔╝╚╗────║║╚╝║║╔═╗║\n" +
             "║╚═╝╠══╦═╩╗╔╬══╦═╣╔╗╔╗║╚═╝║\n" +
@@ -28,15 +26,12 @@ public class Bootstrap
             "───────╚╝\n" +
             "A fast, light and customizable Eclipse MicroProfile™-middleware.";
 
-    // Initialize a base logger
-    LogConfigurator.init();
-
-    // Create a main class logger
-    log = Logger.getLogger( Bootstrap.class.getSimpleName() );
 
     // Print bootstrap logo
-    log.info( logo );
+    LOGGER.log( Level.INFO, logo );
+    Throwable thrown = new IllegalAccessException( "CHECK THIS" );
 
+    LOGGER.log( Level.INFO, "Sample log with throwable", thrown );
   }
 
 }

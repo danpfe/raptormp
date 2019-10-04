@@ -1,0 +1,2 @@
+module raptormp.base {
+}
