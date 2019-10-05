@@ -6,4 +6,4 @@ jobs:
     - stage: test
       name: "OpenJDK 11"
       jdk: openjdk11
-      script: mvn test
+      script: mvn verify
