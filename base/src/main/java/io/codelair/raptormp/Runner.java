@@ -45,9 +45,9 @@ public final class Runner {
         System.out.println("RaptorMP has clawed it's guts out and is now dead; Bye!");
       }));
     } finally {
-      long jvmUpTime = ManagementFactory.getRuntimeMXBean().getUptime();
+      final var jvmUpTime = ManagementFactory.getRuntimeMXBean().getUptime();
       final var codeTime = System.currentTimeMillis() - startTime;
-      System.out.println("RaptorMP started in " + codeTime + "ms. Total JVM-runtime was " + jvmUpTime + "!");
+      System.out.println("RaptorMP started in " + codeTime + "ms. Total JVM-runtime was " + jvmUpTime + "ms!");
     }
   }
 
