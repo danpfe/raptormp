@@ -39,6 +39,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>raptormp-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>io.undertow</groupId>
       <artifactId>undertow-servlet</artifactId>
       <version>${version.undertow-servlet}</version>
