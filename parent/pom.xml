@@ -37,6 +37,7 @@
     <!-- Plugin versions -->
     <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
     <version.maven-surefire-plugin>2.22.2</version.maven-surefire-plugin>
+    <version.maven-checkstyle-plugin>3.1.0</version.maven-checkstyle-plugin>
   </properties>
 
   <build>
@@ -52,8 +53,35 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${version.maven-surefire-plugin}</version>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${version.maven-checkstyle-plugin}</version>
+        </plugin>
       </plugins>
     </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <inherited>true</inherited>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>io.codelair.quality</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>1.0.1</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
   </build>
 
 

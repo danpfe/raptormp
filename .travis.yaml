@@ -1,0 +1,9 @@
+language: java
+jdk:
+  - openjdk11
+jobs:
+  include:
+    - stage: test
+      name: "OpenJDK 11"
+      jdk: openjdk11
+      script: mvn verify
