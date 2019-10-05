@@ -16,10 +16,26 @@
 
 package io.codelair.raptormp;
 
+/**
+ * Contract for ServletContainer.
+ *
+ * @author <a href="mailto:daniel@pfeifer.io">Daniel Pfeifer</a>
+ */
 public interface ServletContainer {
+  /**
+   * Starts the server.
+   */
   void start();
 
+  /**
+   * Stops the server.
+   */
   void stop();
 
+  /**
+   * Registers a component (like a Servlet, Listener or Filter).
+   *
+   * @param registerableComponent the component to register.
+   */
   void registerComponent(RegisterableComponent registerableComponent);
 }
