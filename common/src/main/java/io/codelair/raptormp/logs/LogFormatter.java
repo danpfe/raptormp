@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019 RedBridge Technology AB
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.codelair.raptormp.logs;
 
 import java.io.PrintWriter;
@@ -6,6 +22,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+
 import static java.lang.System.Logger.Level;
 
 /**
@@ -17,35 +34,44 @@ import static java.lang.System.Logger.Level;
  * @author Hassan Nazar, hassenasse @ github (2019)
  * @see also CoreConsoleLogger LoggerFinder
  */
-public class LogFormatter
-{
-  private static final DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss:SSS" );
+public final class LogFormatter {
+  private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS");
 
-  public static String format( String msg, Throwable thrown, Level level )
-  {
+  private LogFormatter() {
+    // Intentionally left blank
+  }
 
-    ZonedDateTime zoneTime = Instant.now()
-        .atZone( ZoneId.systemDefault() );
+  /**
+   * Applies a pre-defined format to logging data which is
+   * passed in.
+   *
+   * @param msg log message
+   * @param thrown optional throwable
+   * @param level log level
+   * @return formatted log-string, passed on to appender
+   */
+  public static String format(final String msg, final Throwable thrown, final Level level) {
 
-    String message = msg;
+    final ZonedDateTime zoneTime = Instant.now()
+        .atZone(ZoneId.systemDefault());
+
     String throwable = "";
 
     // Print throwable, if existing
-    if ( thrown != null )
-    {
+    if (thrown != null) {
 
-      StringWriter writer = new StringWriter();
-      PrintWriter printWriter = new PrintWriter( writer );
+      final StringWriter writer = new StringWriter();
+      final PrintWriter printWriter = new PrintWriter(writer);
       printWriter.println();
-      thrown.printStackTrace( printWriter );
+      thrown.printStackTrace(printWriter);
       printWriter.close();
       throwable = writer.toString();
 
     }
 
-    return zoneTime.format( dateTimeFormat ) + " "
+    return zoneTime.format(DATE_TIME_FORMATTER) + " "
         + level
         + " :: "
-        + message + throwable + "\n";
+        + msg + throwable + "\n";
   }
 }

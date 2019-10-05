@@ -17,13 +17,20 @@
 package io.codelair.raptormp;
 
 import io.codelair.raptormp.server.UndertowServletContainer;
+
 import java.lang.management.ManagementFactory;
+
 import org.eclipse.microprofile.config.Config;
+
+import static java.lang.System.Logger.Level;
 
 /**
  * Boots RaptorMP.
  */
 public final class Runner {
+
+  private static System.Logger logger = System.getLogger(Runner.class.getSimpleName());
+
   /**
    * Main entry point.
    *
@@ -35,19 +42,20 @@ public final class Runner {
 
   private void startWithConfig(final Config config) {
     final var startTime = System.currentTimeMillis();
+
     try {
-      System.out.println("RaptorMP is starting ...");
+      logger.log(Level.INFO, "RaptorMP is starting ...");
       final var servletContainer = new UndertowServletContainer();
       servletContainer.start();
       Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-        System.out.println("RaptorMP is cleanly shutting down ...");
+        logger.log(Level.INFO, "RaptorMP is cleanly shutting down ...");
         servletContainer.stop();
-        System.out.println("RaptorMP has clawed it's guts out and is now dead; Bye!");
+        logger.log(Level.INFO, "RaptorMP has clawed it's guts out and is now dead; Bye!");
       }));
     } finally {
       final var jvmUpTime = ManagementFactory.getRuntimeMXBean().getUptime();
       final var codeTime = System.currentTimeMillis() - startTime;
-      System.out.println("RaptorMP started in " + codeTime + "ms. Total JVM-runtime was " + jvmUpTime + "ms!");
+      logger.log(Level.INFO, "RaptorMP started in " + codeTime + "ms. Total JVM-runtime was " + jvmUpTime + "ms!");
     }
   }
 
