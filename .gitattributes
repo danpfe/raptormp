@@ -1,0 +1,5 @@
+* text eol=lf
+*.jar binary
+*.png binary
+*.jpg binary
+mvnw.cmd text eol=crlf
