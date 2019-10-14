@@ -35,13 +35,13 @@ public final class Runner {
    * @param args command line arguments.
    */
   public static void main(final String[] args) {
-    final var logo = "\n" +
-        "_____________________________________________     ______  __________ \n" +
-        "___  __ \\__    |__  __ \\__  __/_  __ \\__  __ \\    ___   |/  /__  __ \\\n" +
-        "__  /_/ /_  /| |_  /_/ /_  /  _  / / /_  /_/ /    __  /|_/ /__  /_/ /\n" +
-        "_  _, _/_  ___ |  ____/_  /   / /_/ /_  _, _/     _  /  / / _  ____/ \n" +
-        "/_/ |_| /_/  |_/_/     /_/    \\____/ /_/ |_|      /_/  /_/  /_/\n" +
-        "A fast, light and customizable Eclipse MicroProfile™-middleware.\n";
+    final var logo = "\n"
+        + "_____________________________________________     ______  __________ \n"
+        + "___  __ \\__    |__  __ \\__  __/_  __ \\__  __ \\    ___   |/  /__  __ \\\n"
+        + "__  /_/ /_  /| |_  /_/ /_  /  _  / / /_  /_/ /    __  /|_/ /__  /_/ /\n"
+        + "_  _, _/_  ___ |  ____/_  /   / /_/ /_  _, _/     _  /  / / _  ____/ \n"
+        + "/_/ |_| /_/  |_/_/     /_/    \\____/ /_/ |_|      /_/  /_/  /_/\n"
+        + "A fast, light and customizable Eclipse MicroProfile™-middleware.\n";
 
     LOGGER.log(Level.INFO, logo);
 
