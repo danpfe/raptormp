@@ -36,4 +36,34 @@
     <module>server</module>
   </modules>
 
+  <properties>
+    <version.maven-deploy-plugin>3.0.0-M1</version.maven-deploy-plugin>
+    <version.maven-install-plugin>3.0.0-M1</version.maven-install-plugin>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <!-- Prevent this aggregator project from being deployed if "deploy" is specified on the top-level. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>${version.maven-deploy-plugin}</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+        <inherited>false</inherited>
+      </plugin>
+      <plugin>
+        <!-- Prevent this aggregator project from being installed if "install" is specified on the top-level. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>${version.maven-install-plugin}</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+        <inherited>false</inherited>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>
