@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package mp.raptor;
+package mp.raptor.base;
 
 import java.lang.management.ManagementFactory;
 import mp.raptor.server.UndertowServletContainer;

@@ -17,8 +17,9 @@
 package mp.raptor.common.logs.appenders;
 
 
-import java.util.ResourceBundle;
 import mp.raptor.common.logs.LogFormatter;
+
+import java.util.ResourceBundle;
 
 
 /**

@@ -25,17 +25,17 @@ public interface ServletContainer {
   /**
    * Starts the server.
    */
-  void start();
+  void start ();
 
   /**
    * Stops the server.
    */
-  void stop();
+  void stop ();
 
   /**
    * Registers a component (like a Servlet, Listener or Filter).
    *
    * @param registerableComponent the component to register.
    */
-  void registerComponent(RegisterableComponent registerableComponent);
+  void registerComponent (RegisterableComponent registerableComponent);
 }
