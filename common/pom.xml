@@ -33,4 +33,12 @@
   <name>RaptorMP :: Common</name>
   <description>Common utilities module for RaptorMP - contains Exceptions, models and common utility libraries.</description>
 
+  <dependencies>
+    <dependency>
+      <groupId>io.github.classgraph</groupId>
+      <artifactId>classgraph</artifactId>
+      <version>4.8.47</version>
+    </dependency>
+  </dependencies>
+
 </project>

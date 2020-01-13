@@ -3,4 +3,5 @@ module mp.raptor.base {
   requires java.management;
   requires java.annotation;
   requires microprofile.config.api;
+  requires io.github.classgraph;
 }
