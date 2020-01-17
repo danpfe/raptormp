@@ -21,4 +21,5 @@ package mp.raptor.common;
  */
 public interface RegisterableComponent {
 
+  String hello ();
 }

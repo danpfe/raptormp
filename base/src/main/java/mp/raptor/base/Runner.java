@@ -16,9 +16,13 @@
 
 package mp.raptor.base;
 
-import java.lang.management.ManagementFactory;
+import mp.raptor.common.observer.ObserverType;
 import mp.raptor.server.UndertowServletContainer;
+import mp.raptor.server.component.RegisterableServletComponent;
+import mp.raptor.server.parser.AnnotationReader;
 import org.eclipse.microprofile.config.Config;
+
+import java.lang.management.ManagementFactory;
 
 import static java.lang.System.Logger.Level;
 
@@ -29,12 +33,16 @@ public final class Runner {
 
   private static final System.Logger LOGGER = System.getLogger(Runner.class.getSimpleName());
 
+  private Runner () {
+    // intentionally left empty
+  }
+
   /**
    * Main entry point.
    *
    * @param args command line arguments.
    */
-  public static void main(final String[] args) {
+  public static void main (final String[] args) {
     final var logo = "\n"
         + "_____________________________________________     ______  __________ \n"
         + "___  __ \\__    |__  __ \\__  __/_  __ \\__  __ \\    ___   |/  /__  __ \\\n"
@@ -48,26 +56,35 @@ public final class Runner {
     new Runner().startWithConfig(null);
   }
 
-  private void startWithConfig(final Config config) {
+  private void startWithConfig (final Config config) {
     final var startTime = System.currentTimeMillis();
 
     try {
       LOGGER.log(Level.INFO, "RaptorMP is starting ...");
       final var servletContainer = new UndertowServletContainer();
-      servletContainer.start();
+
+      // Add shutdown hook
       Runtime.getRuntime().addShutdownHook(new Thread(() -> {
         LOGGER.log(Level.INFO, "RaptorMP is cleanly shutting down ...");
         servletContainer.stop();
         LOGGER.log(Level.INFO, "RaptorMP has clawed it's guts out and is now dead; Bye!");
       }));
+
+      // Scan all registerable components
+      final AnnotationReader reader = new AnnotationReader();
+      reader.readAnnotations();
+      final RegisterableServletComponent servletComponent = new RegisterableServletComponent();
+      UndertowServletContainer
+          .notifier
+          .getStore()
+          .getStoreOfType(ObserverType.SERVLET)
+          .add(servletComponent);
+      UndertowServletContainer.notifier.notifyObservers(ObserverType.SERVLET);
+
     } finally {
       final var jvmUpTime = ManagementFactory.getRuntimeMXBean().getUptime();
       final var codeTime = System.currentTimeMillis() - startTime;
       LOGGER.log(Level.INFO, "RaptorMP started in " + codeTime + "ms. Total JVM-runtime was " + jvmUpTime + "ms!");
     }
-  }
-
-  private Runner() {
-    // intentionally left empty
   }
 }

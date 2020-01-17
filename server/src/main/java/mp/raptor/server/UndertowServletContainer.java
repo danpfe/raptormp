@@ -16,11 +16,21 @@
 
 package mp.raptor.server;
 
+import io.undertow.Handlers;
 import io.undertow.Undertow;
-import io.undertow.server.HttpHandler;
-import io.undertow.server.HttpServerExchange;
+import io.undertow.server.handlers.PathHandler;
+import io.undertow.servlet.Servlets;
+import io.undertow.servlet.api.DeploymentInfo;
+import io.undertow.servlet.api.DeploymentManager;
+import io.undertow.servlet.api.ServletInfo;
 import mp.raptor.common.RegisterableComponent;
 import mp.raptor.common.ServletContainer;
+import mp.raptor.server.component.RegisterableComponentNotifier;
+import mp.raptor.server.component.RegisterableServletObserver;
+
+import javax.servlet.ServletException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility class to start the servlet container and register deployable components (i.e. Servlets, Filters or Listeners).
@@ -28,29 +38,53 @@ import mp.raptor.common.ServletContainer;
  * @author <a href="mailto:daniel@pfeifer.io">Daniel Pfeifer</a>
  */
 public class UndertowServletContainer implements ServletContainer {
+  public static final RegisterableComponentNotifier notifier = new RegisterableComponentNotifier();
+  private final Undertow.Builder undertowBuilder;
   private Undertow undertow;
+  private List<ServletInfo> servletInfoList;
+
+  public UndertowServletContainer () {
+    final var port = 8080;
+    undertowBuilder = Undertow.builder()
+        .addHttpListener(port, "localhost", httpServerExchange -> httpServerExchange.getResponseSender().send("Welcome to RaptorMP!"));
+
+    // Create the component-notifier
+    final RegisterableServletObserver observer = new RegisterableServletObserver(this);
+    notifier.register(observer);
+  }
 
   /**
    * Starts the servlet container.
    */
   @Override
-  public void start() {
-    final var port = 8080;
-    undertow = Undertow.builder().addHttpListener(port, "localhost", new HttpHandler() {
-      @Override
-      public void handleRequest(final HttpServerExchange httpServerExchange) throws Exception {
-        httpServerExchange.getResponseSender().send("Welcome to RaptorMP!");
-      }
-    }).build();
+  public void start () {
+    final DeploymentInfo servletBuilder = Servlets.deployment()
+        .setClassLoader(UndertowServletContainer.class.getClassLoader())
+        .setContextPath("/")
+        .setDeploymentName("RaptorMP")
+        .addServlets(servletInfoList);
 
-    undertow.start();
+    try {
+      final DeploymentManager manager = Servlets.defaultContainer().addDeployment(servletBuilder);
+      manager.deploy();
+      final PathHandler path = Handlers.path(Handlers.redirect("/")).addPrefixPath("/", manager.start());
+
+      // Bootstrap the server
+      undertow = undertowBuilder
+          .setHandler(path)
+          .build();
+
+      undertow.start();
+    } catch (final ServletException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
    * Tears down the servlet container.
    */
   @Override
-  public void stop() {
+  public void stop () {
     undertow.stop();
   }
 
@@ -60,7 +94,10 @@ public class UndertowServletContainer implements ServletContainer {
    * @param registerableComponent the component to register.
    */
   @Override
-  public void registerComponent(final RegisterableComponent registerableComponent) {
-    // TODO
+  public void registerComponent (final RegisterableComponent registerableComponent) {
+    // Serlets parsed and ready to be added at this point.
+    servletInfoList = new ArrayList<>();
+    start();
   }
+
 }
