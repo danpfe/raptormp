@@ -1,5 +1,6 @@
 package mp.raptor.server.component;
 
+import io.undertow.servlet.api.ServletInfo;
 import mp.raptor.common.RegisterableComponent;
 
 /**
@@ -8,9 +9,16 @@ import mp.raptor.common.RegisterableComponent;
  * @author Hassan Nazar
  * @author www.hassannazar.net
  */
-public class RegisterableServletComponent implements RegisterableComponent {
+public class RegisterableServletComponent implements RegisterableComponent<ServletInfo> {
+  private ServletInfo servletInfo;
+
   @Override
-  public String hello () {
-    return "hello";
+  public ServletInfo getComponent () {
+    return servletInfo;
+  }
+
+  @Override
+  public void setComponent (final ServletInfo servletInfo) {
+    this.servletInfo = servletInfo;
   }
 }

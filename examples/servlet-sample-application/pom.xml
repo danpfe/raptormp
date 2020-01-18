@@ -5,8 +5,7 @@
   <artifactId>servlet-sample-application</artifactId>
   <version>1.0</version>
 
-  <name>TODO</name>
-  <description>TODO</description>
+  <name>Servlet Example Application</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

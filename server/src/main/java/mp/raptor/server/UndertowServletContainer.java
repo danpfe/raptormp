@@ -25,12 +25,12 @@ import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletInfo;
 import mp.raptor.common.RegisterableComponent;
 import mp.raptor.common.ServletContainer;
-import mp.raptor.server.component.RegisterableComponentNotifier;
-import mp.raptor.server.component.RegisterableServletObserver;
+import mp.raptor.server.component.RegisterableServletController;
 
 import javax.servlet.ServletException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.lang.System.Logger.Level.*;
 
 /**
  * Utility class to start the servlet container and register deployable components (i.e. Servlets, Filters or Listeners).
@@ -38,45 +38,53 @@ import java.util.List;
  * @author <a href="mailto:daniel@pfeifer.io">Daniel Pfeifer</a>
  */
 public class UndertowServletContainer implements ServletContainer {
-  public static final RegisterableComponentNotifier notifier = new RegisterableComponentNotifier();
-  private final Undertow.Builder undertowBuilder;
+  private static final System.Logger LOGGER = System.getLogger(UndertowServletContainer.class.getSimpleName());
+  private final RegisterableServletController componentController = new RegisterableServletController();
   private Undertow undertow;
-  private List<ServletInfo> servletInfoList;
-
-  public UndertowServletContainer () {
-    final var port = 8080;
-    undertowBuilder = Undertow.builder()
-        .addHttpListener(port, "localhost", httpServerExchange -> httpServerExchange.getResponseSender().send("Welcome to RaptorMP!"));
-
-    // Create the component-notifier
-    final RegisterableServletObserver observer = new RegisterableServletObserver(this);
-    notifier.register(observer);
-  }
 
   /**
    * Starts the servlet container.
    */
   @Override
   public void start () {
-    final DeploymentInfo servletBuilder = Servlets.deployment()
-        .setClassLoader(UndertowServletContainer.class.getClassLoader())
-        .setContextPath("/")
-        .setDeploymentName("RaptorMP")
-        .addServlets(servletInfoList);
-
     try {
-      final DeploymentManager manager = Servlets.defaultContainer().addDeployment(servletBuilder);
+      final var port = 8080;
+      // Servlets parsed and ready to be added at this point.
+      componentController.registerComponents();
+      final var servlets = componentController.getRegisterables();
+      final var servletInfoList = servlets.stream()
+          .map(RegisterableComponent::getComponent)
+          .filter(ServletInfo.class::isInstance)
+          .map(ServletInfo.class::cast)
+          .collect(Collectors.toList());
+
+      if (servletInfoList.isEmpty()) {
+        LOGGER.log(INFO, "No servlets found to deploy...");
+      } else {
+        // Create the servlet deployment manifest with the provided servlets
+        LOGGER.log(INFO, "Attempting to deploy registered servlets");
+      }
+
+      final DeploymentInfo deploymentInfo = Servlets.deployment()
+          .setClassLoader(UndertowServletContainer.class.getClassLoader())
+          .setContextPath("/")
+          .setDeploymentName("RaptorMP")
+          .addServlets(servletInfoList);
+      // Assign to deployment manager and get HTTPHandler
+      final DeploymentManager manager = Servlets.defaultContainer().addDeployment(deploymentInfo);
       manager.deploy();
-      final PathHandler path = Handlers.path(Handlers.redirect("/")).addPrefixPath("/", manager.start());
+      final PathHandler path = Handlers.path(Handlers.redirect("/"))
+          .addPrefixPath("/", manager.start());
 
       // Bootstrap the server
-      undertow = undertowBuilder
+      LOGGER.log(DEBUG, "Bootstrapping RaptorMP");
+      undertow = Undertow.builder()
+          .addHttpListener(port, "localhost")
           .setHandler(path)
           .build();
-
       undertow.start();
     } catch (final ServletException e) {
-      e.printStackTrace();
+      LOGGER.log(ERROR, "Servlet container failed to start.", e);
     }
   }
 
@@ -95,9 +103,7 @@ public class UndertowServletContainer implements ServletContainer {
    */
   @Override
   public void registerComponent (final RegisterableComponent registerableComponent) {
-    // Serlets parsed and ready to be added at this point.
-    servletInfoList = new ArrayList<>();
-    start();
+    // Intentionally left empty
   }
 
 }

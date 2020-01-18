@@ -16,10 +16,7 @@
 
 package mp.raptor.base;
 
-import mp.raptor.common.observer.ObserverType;
 import mp.raptor.server.UndertowServletContainer;
-import mp.raptor.server.component.RegisterableServletComponent;
-import mp.raptor.server.parser.AnnotationReader;
 import org.eclipse.microprofile.config.Config;
 
 import java.lang.management.ManagementFactory;
@@ -62,6 +59,7 @@ public final class Runner {
     try {
       LOGGER.log(Level.INFO, "RaptorMP is starting ...");
       final var servletContainer = new UndertowServletContainer();
+      servletContainer.start();
 
       // Add shutdown hook
       Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -69,17 +67,6 @@ public final class Runner {
         servletContainer.stop();
         LOGGER.log(Level.INFO, "RaptorMP has clawed it's guts out and is now dead; Bye!");
       }));
-
-      // Scan all registerable components
-      final AnnotationReader reader = new AnnotationReader();
-      reader.readAnnotations();
-      final RegisterableServletComponent servletComponent = new RegisterableServletComponent();
-      UndertowServletContainer
-          .notifier
-          .getStore()
-          .getStoreOfType(ObserverType.SERVLET)
-          .add(servletComponent);
-      UndertowServletContainer.notifier.notifyObservers(ObserverType.SERVLET);
 
     } finally {
       final var jvmUpTime = ManagementFactory.getRuntimeMXBean().getUptime();

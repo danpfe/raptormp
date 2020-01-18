@@ -19,5 +19,4 @@ import mp.raptor.common.logs.LoggerFinder;
 module mp.raptor.common {
   provides java.lang.System.LoggerFinder with LoggerFinder;
   exports mp.raptor.common;
-  exports mp.raptor.common.observer;
 }

@@ -17,9 +17,22 @@
 package mp.raptor.common;
 
 /**
- *
+ * Defines a component which is capable of being registered to an
+ * application container.
  */
-public interface RegisterableComponent {
+public interface RegisterableComponent<T> {
 
-  String hello ();
+  /**
+   * Get the registerable component.
+   *
+   * @return component that can be registered to the container.
+   */
+  T getComponent();
+
+  /**
+   * Set a registerable component.
+   *
+   * @param component component that can be registered to the container.
+   */
+  void setComponent(T component);
 }

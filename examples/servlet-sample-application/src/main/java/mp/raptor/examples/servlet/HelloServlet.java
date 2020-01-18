@@ -1,4 +1,4 @@
-package mp.raptor.servlet4app;
+package mp.raptor.examples.servlet;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,9 +17,9 @@ import java.io.IOException;
     description = "This is a description of a servlet",
     urlPatterns = "/hello"
 )
-public class HelloServlet2 extends HttpServlet {
+public class HelloServlet extends HttpServlet {
 
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doGet (final HttpServletRequest request, final HttpServletResponse response) throws IOException {
     response.getWriter().println("Hello");
   }
 
