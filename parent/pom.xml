@@ -62,7 +62,6 @@
       </plugins>
     </pluginManagement>
 
-<!-- TODO: RE-ENABLE
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -84,7 +83,6 @@
         </dependencies>
       </plugin>
     </plugins>
--->
   </build>
 
   <repositories>

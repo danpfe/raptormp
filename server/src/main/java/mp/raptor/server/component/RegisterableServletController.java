@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019 RedBridge Technology AB
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mp.raptor.server.component;
 
 import io.undertow.servlet.Servlets;
@@ -21,24 +37,29 @@ import java.util.List;
 import static java.lang.String.format;
 import static java.lang.System.Logger.Level.DEBUG;
 import static java.lang.System.Logger.Level.INFO;
+import static java.lang.System.Logger.Level.ERROR;
 
 /**
  * Purpose:
+ * Servlet registration controller. Calls the annotation processing
+ * and extracts all servlets that need to be registered for deploy.
  *
  * @author Hassan Nazar
- * @author www.hassannazar.net
  */
 public class RegisterableServletController implements RegistrationController<ServletInfo> {
   private static final Logger LOGGER = System.getLogger(RegisterableServletController.class.getSimpleName());
 
   private final List<RegisterableComponent<ServletInfo>> components;
 
-  public RegisterableServletController () {
+  /**
+   * Constructor.
+   */
+  public RegisterableServletController() {
     this.components = new ArrayList<>();
   }
 
   @Override
-  public void registerComponents () {
+  public void registerComponents() {
     // Read annotations to get a collection of registerable servlets
     LOGGER.log(DEBUG, "Attempting to register servlets");
     final AnnotationReader annotationReader = new AnnotationReader();
@@ -58,7 +79,8 @@ public class RegisterableServletController implements RegistrationController<Ser
         if (servletAnnotation == null) {
           throw new AnnotationParseException("No WebServlet found for annotated class");
         }
-        LOGGER.log(INFO, format("Registering servlet: %s at location: %s", classLocation, Arrays.toString(servletAnnotation.urlPatterns())));
+        LOGGER.log(INFO, format("Registering servlet: %s at location: %s", classLocation,
+            Arrays.toString(servletAnnotation.urlPatterns())));
         final ServletInfo deployableServletInfo = Servlets
             .servlet((Class<? extends Servlet>) classLoader.loadClass(classLocation))
             .addMappings(servletAnnotation.urlPatterns());
@@ -72,13 +94,13 @@ public class RegisterableServletController implements RegistrationController<Ser
         servletComponent.setComponent(deployableServletInfo);
         components.add(servletComponent);
       } catch (final ClassNotFoundException | AnnotationParseException e) {
-        e.printStackTrace();
+        LOGGER.log(ERROR, "annotation parsing failed", e);
       }
     }
   }
 
   @Override
-  public List<RegisterableComponent<ServletInfo>> getRegisterables () {
+  public List<RegisterableComponent<ServletInfo>> getRegisterables() {
     return components;
   }
 }

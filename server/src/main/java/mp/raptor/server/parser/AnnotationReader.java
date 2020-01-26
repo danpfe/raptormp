@@ -49,7 +49,7 @@ public class AnnotationReader {
    * @param type of Annotations aggregation we are interested in.
    * @return Collection of class-information.
    */
-  public Collection<ClassInfo> readAnnotations (final AnnotationTypes type) {
+  public Collection<ClassInfo> readAnnotations(final AnnotationTypes type) {
     final AnnotationParser parser = new AnnotationParser();
     if (annotatedClasses.isEmpty()) {
       // Load Jandex index file

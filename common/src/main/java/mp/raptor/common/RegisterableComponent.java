@@ -19,6 +19,8 @@ package mp.raptor.common;
 /**
  * Defines a component which is capable of being registered to an
  * application container.
+ *
+ * @param <T> component to register
  */
 public interface RegisterableComponent<T> {
 

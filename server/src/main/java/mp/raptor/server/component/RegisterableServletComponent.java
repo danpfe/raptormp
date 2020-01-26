@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019 RedBridge Technology AB
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mp.raptor.server.component;
 
 import io.undertow.servlet.api.ServletInfo;
@@ -5,20 +21,20 @@ import mp.raptor.common.RegisterableComponent;
 
 /**
  * Purpose:
+ * Defines a servlet registration component.
  *
  * @author Hassan Nazar
- * @author www.hassannazar.net
  */
 public class RegisterableServletComponent implements RegisterableComponent<ServletInfo> {
   private ServletInfo servletInfo;
 
   @Override
-  public ServletInfo getComponent () {
+  public ServletInfo getComponent() {
     return servletInfo;
   }
 
   @Override
-  public void setComponent (final ServletInfo servletInfo) {
-    this.servletInfo = servletInfo;
+  public void setComponent(final ServletInfo that) {
+    this.servletInfo = that;
   }
 }

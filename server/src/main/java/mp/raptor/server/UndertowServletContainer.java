@@ -30,7 +30,9 @@ import mp.raptor.server.component.RegisterableServletController;
 import javax.servlet.ServletException;
 import java.util.stream.Collectors;
 
-import static java.lang.System.Logger.Level.*;
+import static java.lang.System.Logger.Level.DEBUG;
+import static java.lang.System.Logger.Level.INFO;
+import static java.lang.System.Logger.Level.ERROR;
 
 /**
  * Utility class to start the servlet container and register deployable components (i.e. Servlets, Filters or Listeners).
@@ -46,7 +48,7 @@ public class UndertowServletContainer implements ServletContainer {
    * Starts the servlet container.
    */
   @Override
-  public void start () {
+  public void start() {
     try {
       final var port = 8080;
       // Servlets parsed and ready to be added at this point.
@@ -92,7 +94,7 @@ public class UndertowServletContainer implements ServletContainer {
    * Tears down the servlet container.
    */
   @Override
-  public void stop () {
+  public void stop() {
     undertow.stop();
   }
 
@@ -102,7 +104,7 @@ public class UndertowServletContainer implements ServletContainer {
    * @param registerableComponent the component to register.
    */
   @Override
-  public void registerComponent (final RegisterableComponent registerableComponent) {
+  public void registerComponent(final RegisterableComponent registerableComponent) {
     // Intentionally left empty
   }
 

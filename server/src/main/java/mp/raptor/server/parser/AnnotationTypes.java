@@ -21,20 +21,34 @@ package mp.raptor.server.parser;
  * off classes extracted by Jandex.
  *
  * @author Hassan Nazar
- * @author www.hassannazar.net
  */
 public enum AnnotationTypes {
+  /**
+   * Defines a grouping of annotations called servlet.
+   * Used when parsing index files for registerable
+   * servlets to the container.
+   */
   SERVLET(new String[]{
       "javax.servlet.annotation.WebServlet"
   });
 
   private final String[] annotationDefinitions;
 
-  AnnotationTypes (final String[] s) {
+  /**
+   * Assigns package structures for annotation types.
+   *
+   * @param s list of packages.
+   */
+  AnnotationTypes(final String[] s) {
     annotationDefinitions = s;
   }
 
-  public String[] getAnnotationDefinitions () {
+  /**
+   * Return a list of definitions for an annotation type.
+   *
+   * @return list of definition URIs.
+   */
+  public String[] getAnnotationDefinitions() {
     return annotationDefinitions;
   }
 }

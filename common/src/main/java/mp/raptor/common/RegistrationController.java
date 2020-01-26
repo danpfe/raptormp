@@ -6,7 +6,7 @@ import java.util.List;
  * Manages the registration and pool-storage of registerable components of
  * type T.
  *
- * @param <T> Type of component that is registerable
+ * @param <T> Type of component that is registerable.
  */
 public interface RegistrationController<T> {
   /**

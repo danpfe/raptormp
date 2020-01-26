@@ -30,7 +30,7 @@ public final class Runner {
 
   private static final System.Logger LOGGER = System.getLogger(Runner.class.getSimpleName());
 
-  private Runner () {
+  private Runner() {
     // intentionally left empty
   }
 
@@ -39,7 +39,7 @@ public final class Runner {
    *
    * @param args command line arguments.
    */
-  public static void main (final String[] args) {
+  public static void main(final String[] args) {
     final var logo = "\n"
         + "_____________________________________________     ______  __________ \n"
         + "___  __ \\__    |__  __ \\__  __/_  __ \\__  __ \\    ___   |/  /__  __ \\\n"
@@ -53,7 +53,7 @@ public final class Runner {
     new Runner().startWithConfig(null);
   }
 
-  private void startWithConfig (final Config config) {
+  private void startWithConfig(final Config config) {
     final var startTime = System.currentTimeMillis();
 
     try {

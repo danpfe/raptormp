@@ -38,7 +38,7 @@ public class AnnotationParser {
 
   private static final System.Logger LOGGER = System.getLogger(AnnotationParser.class.getSimpleName());
 
-  Collection<ClassInfo> parseClassInformation (final InputStream inputStream) throws IOException {
+  Collection<ClassInfo> parseClassInformation(final InputStream inputStream) throws IOException {
     // Parse Jandex file
     LOGGER.log(DEBUG, "Attempting to parse jandex file.");
     final var indexReader = new IndexReader(inputStream);
@@ -46,7 +46,7 @@ public class AnnotationParser {
     return index.getKnownClasses();
   }
 
-  List<ClassInfo> filterClassesOfType (final Collection<ClassInfo> annotatedClasses, final AnnotationTypes type) {
+  List<ClassInfo> filterClassesOfType(final Collection<ClassInfo> annotatedClasses, final AnnotationTypes type) {
     final List<ClassInfo> filteredClasses = new ArrayList<>();
     for (final ClassInfo classInfo : annotatedClasses) {
       for (final String annotation : type.getAnnotationDefinitions()) {

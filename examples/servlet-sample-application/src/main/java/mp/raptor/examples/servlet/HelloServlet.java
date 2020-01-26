@@ -10,17 +10,16 @@ import java.io.IOException;
  * Purpose:
  *
  * @author Hassan Nazar
- * @author www.hassannazar.net
  */
 @WebServlet(
-    name = "HelloServlet",
-    description = "This is a description of a servlet",
-    urlPatterns = "/hello"
+        name = "HelloServlet",
+        description = "This is a description of a servlet",
+        urlPatterns = "/hello"
 )
 public class HelloServlet extends HttpServlet {
 
-  public void doGet (final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-    response.getWriter().println("Hello");
-  }
+    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        response.getWriter().println("Hello");
+    }
 
 }
