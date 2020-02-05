@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package mp.raptor;
+package mp.raptor.base;
 
-import java.lang.management.ManagementFactory;
 import mp.raptor.server.UndertowServletContainer;
 import org.eclipse.microprofile.config.Config;
+
+import java.lang.management.ManagementFactory;
 
 import static java.lang.System.Logger.Level;
 
@@ -28,6 +29,10 @@ import static java.lang.System.Logger.Level;
 public final class Runner {
 
   private static final System.Logger LOGGER = System.getLogger(Runner.class.getSimpleName());
+
+  private Runner() {
+    // intentionally left empty
+  }
 
   /**
    * Main entry point.
@@ -55,19 +60,18 @@ public final class Runner {
       LOGGER.log(Level.INFO, "RaptorMP is starting ...");
       final var servletContainer = new UndertowServletContainer();
       servletContainer.start();
+
+      // Add shutdown hook
       Runtime.getRuntime().addShutdownHook(new Thread(() -> {
         LOGGER.log(Level.INFO, "RaptorMP is cleanly shutting down ...");
         servletContainer.stop();
         LOGGER.log(Level.INFO, "RaptorMP has clawed it's guts out and is now dead; Bye!");
       }));
+
     } finally {
       final var jvmUpTime = ManagementFactory.getRuntimeMXBean().getUptime();
       final var codeTime = System.currentTimeMillis() - startTime;
       LOGGER.log(Level.INFO, "RaptorMP started in " + codeTime + "ms. Total JVM-runtime was " + jvmUpTime + "ms!");
     }
-  }
-
-  private Runner() {
-    // intentionally left empty
   }
 }

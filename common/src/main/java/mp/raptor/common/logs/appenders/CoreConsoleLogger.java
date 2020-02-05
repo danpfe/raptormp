@@ -17,8 +17,9 @@
 package mp.raptor.common.logs.appenders;
 
 
-import java.util.ResourceBundle;
 import mp.raptor.common.logs.LogFormatter;
+
+import java.util.ResourceBundle;
 
 
 /**
@@ -38,12 +39,18 @@ public class CoreConsoleLogger implements System.Logger {
   }
 
   @Override
-  public void log(final Level level, final ResourceBundle bundle, final String msg, final Throwable thrown) {
+  public void log(final Level level,
+                  final ResourceBundle bundle,
+                  final String msg,
+                  final Throwable thrown) {
     System.out.print(LogFormatter.format(msg, thrown, level));
   }
 
   @Override
-  public void log(final Level level, final ResourceBundle bundle, final String format, final Object... params) {
+  public void log(final Level level,
+                  final ResourceBundle bundle,
+                  final String format,
+                  final Object... params) {
     System.out.print(LogFormatter.format(format, null, level));
   }
 }

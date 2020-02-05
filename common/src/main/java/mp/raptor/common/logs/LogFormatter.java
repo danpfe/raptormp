@@ -35,7 +35,8 @@ import static java.lang.System.Logger.Level;
  * @see also CoreConsoleLogger LoggerFinder
  */
 public final class LogFormatter {
-  private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS");
+  private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
+      .ofPattern("yyyy-MM-dd HH:mm:ss:SSS");
 
   private LogFormatter() {
     // Intentionally left blank
