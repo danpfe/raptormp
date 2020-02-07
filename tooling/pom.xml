@@ -28,9 +28,12 @@
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>raptormp-common</artifactId>
+  <artifactId>raptormp-tooling</artifactId>
+  <packaging>pom</packaging>
+  <name>RaptorMP :: Tooling</name>
 
-  <name>RaptorMP :: Common</name>
-  <description>Common utilities module for RaptorMP - contains Exceptions, models and common utility libraries.</description>
+  <modules>
+    <module>raptormp-maven-plugin</module>
+  </modules>
 
 </project>

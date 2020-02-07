@@ -99,4 +99,17 @@
     </repository>
   </distributionManagement>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.jboss</groupId>
+      <artifactId>jandex</artifactId>
+      <version>2.1.2.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.classgraph</groupId>
+      <artifactId>classgraph</artifactId>
+      <version>4.8.47</version>
+    </dependency>
+  </dependencies>
+
 </project>

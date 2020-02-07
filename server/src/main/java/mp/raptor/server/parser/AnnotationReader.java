@@ -80,6 +80,4 @@ public class AnnotationReader {
     // Filter and Return parsed pool to caller
     return parser.filterClassesOfType(annotatedClasses, type);
   }
-
-
 }
