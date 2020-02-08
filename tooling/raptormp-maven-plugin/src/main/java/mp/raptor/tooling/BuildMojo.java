@@ -1,7 +1,6 @@
 package mp.raptor.tooling;
 
 import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -21,6 +20,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 
+
 /**
  * Purpose:
  * - Runs Annotation parser on the project
@@ -39,21 +39,16 @@ public class BuildMojo extends AbstractMojo {
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("Starting RaptorMP Build..");
     // Parse Jandex annotations
-    try {
-      final URLClassLoader urlClassLoader = getUrlClassLoader();
-      final var indexer = parseAnnotations(urlClassLoader);
-      storeAnnotations(indexer);
-
-    } catch (final MalformedURLException | DependencyResolutionRequiredException e) {
-      getLog().error(e);
-    }
+    final URLClassLoader urlClassLoader = getUrlClassLoader();
+    final var indexer = parseAnnotations(urlClassLoader);
+    storeAnnotations(indexer);
   }
 
   /**
    * @param index
    */
   private void storeAnnotations(final Index index) {
-    final var indexPath = project.getBuild().getOutputDirectory() + "index.idx";
+    final var indexPath = project.getBuild().getOutputDirectory() + "/index.idx";
     try (FileOutputStream outputStream = new FileOutputStream(indexPath)) {
       final var writer = new IndexWriter(outputStream);
       writer.write(index);
@@ -81,12 +76,12 @@ public class BuildMojo extends AbstractMojo {
                  .scan()) {
 
       // Populate index file
-      for (final ClassInfo clazz : scanResult.getAllClasses()) {
-        getLog().info("Found Class = " + clazz.getSimpleName());
-        try (InputStream inputStream = urlClassLoader.getResourceAsStream(clazz.getClasspathElementURL().toString())) {
+      for (final String classLocation : scanResult.getResourcesWithExtension(".class").getPaths()) {
+        getLog().info("Found Class = " + classLocation);
+        try (InputStream inputStream = urlClassLoader.getResourceAsStream(classLocation)) {
           indexer.index(inputStream);
         } catch (final IOException e) {
-          e.printStackTrace();
+          getLog().error(e);
         }
       }
 
@@ -99,18 +94,21 @@ public class BuildMojo extends AbstractMojo {
    * restricted classpath during project compilation. We need to fetch and pass a
    * URLClassloader to the indexer, so as to find all the project-level classes.
    *
-   * @return
-   * @throws DependencyResolutionRequiredException
-   * @throws MalformedURLException
+   * @return classloader containing paths to compile-cp elements
+   * @throws MojoExecutionException
    */
-  private URLClassLoader getUrlClassLoader() throws DependencyResolutionRequiredException, MalformedURLException {
+  private URLClassLoader getUrlClassLoader() throws MojoExecutionException {
     // Scan over all classes under the project group-id
     getLog().info("Parsing classes under " + project.getGroupId());
 
     // Add compiled classpath element URI's
     final var paths = new ArrayList<URL>();
-    for (final Object compilePath : project.getCompileClasspathElements()) {
-      paths.add(new File((String) compilePath).toURI().toURL());
+    try {
+      for (final Object compilePath : project.getCompileClasspathElements()) {
+        paths.add(new File((String) compilePath).toURI().toURL());
+      }
+    } catch (DependencyResolutionRequiredException | MalformedURLException e) {
+      throw new MojoExecutionException("Failed to fetch classpath compile path!");
     }
 
     //Create a classloader and add all URL's

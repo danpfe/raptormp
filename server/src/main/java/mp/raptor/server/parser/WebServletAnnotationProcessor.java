@@ -46,7 +46,7 @@ public final class WebServletAnnotationProcessor {
       final var annotations = clazz.getAnnotations();
 
       for (final Annotation annotation : annotations) {
-        if (annotations[0] instanceof WebServlet) {
+        if (annotation instanceof WebServlet) {
           return (WebServlet) annotation;
         }
       }
